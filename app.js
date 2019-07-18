@@ -14,15 +14,18 @@ startButton.addEventListener("click", (event) => {
 // begin functions defining arrow key movement
 function moveLeft(){
     let leftPosition = window.getComputedStyle(shooter).getPropertyValue('left')
+    var end;
     if(shooter.style.left === "2%"){
-        return
+        end
+        // 
     } else {
         let position = parseInt(leftPosition)
         position -= 4
         shooter.style.left = `${position}px`
     }
-
+    return end
 }
+
 function moveRight(){
     let leftPosition = window.getComputedStyle(shooter).getPropertyValue('left')
     if(shooter.style.left === "88%"){
@@ -74,7 +77,6 @@ function flyBoy(){
     }
 }
 window.addEventListener("keydown", flyBoy)
-console.log("shit happens")
 // not y axis is fixed so laser creation will grab current x axis.. offset the y axis to appear its nose of ship firing
 // var gameArea = document.getElementById("gameArea")
 
@@ -84,25 +86,26 @@ function createEnemy(){
     let enemySpriteImg = enemyImg[Math.floor(Math.random()*enemyImg.length)]
     newEnemy.src =enemySpriteImg
     newEnemy.classList.add('enemy')
-    newEnemy.classList.add('enemy-transition')
     newEnemy.style.left = `${Math.floor(Math.random()*330)+10}px`
     newEnemy.style.top = '-200px'
     gameArea.appendChild(newEnemy)
     moveEnemy(newEnemy)
-    console.log(" new enemy is made")
 }
 function moveEnemy(enemy){
     let moveEnemyInterval = setInterval(() => {
         let yPosition = parseInt(window.getComputedStyle(enemy).getPropertyValue('top'))
-    if (yPosition <= 50) {
+        console.log(yPosition)
+    if( yPosition === 340){
+      enemy.remove()
+    };
+    if (yPosition <= 400) {
       if (Array.from(enemy.classList).includes("dead-enemy")) {
-        enemy.remove()
+        console.log("im back")
       } else {
       enemy.style.top = `${yPosition + 2}px`
-      console.log("trying to move")
         }
       }
-    }, 30)
+    }, 70)
 }
 // end enemy creation and movement functions
 // begin laser fire functions 
@@ -119,8 +122,8 @@ function createLaserElement(){
     let newLaser = document.createElement('img')
     newLaser.src = 'images/laser.png'
     newLaser.classList.add('laser')
-    newLaser.style.left = `${xPosition - 90}px`
-    newLaser.style.top = `${yPosition-18}px`
+    newLaser.style.left = `${xPosition - 145}px`
+    newLaser.style.top = `${yPosition-21}px`
     return newLaser
 }
 
@@ -137,7 +140,7 @@ function moveLaser(laser) {
           scoreCounter.innerText = parseInt(scoreCounter.innerText) + 100
         }
       })
-      if (yPosition <= -100) {
+      if (yPosition <= 00) {
         laser.remove()
       } else {
         laser.style.top = `${yPosition - 18}px`
@@ -146,25 +149,30 @@ function moveLaser(laser) {
   }
 //
 
+
+
+
+// var scorecounter = 0;
 function checkLaserHit(laser,enemy){
-    console.log("checking if hit")
     let laserLeft = parseInt(laser.style.left)
     let laserTop = parseInt(laser.style.top)
-    let laserBottom = laserTop - 15
     let enemyTop = parseInt(enemy.style.top)
-    let enemyBottom = enemyTop - 30
+    let enemyBottom = (enemyTop - 30)
     let enemyLeft = parseInt(enemy.style.left)
     // left (x axis)= 0-400 px top(y axis)= 300- (-10)px
-    if (laserTop != 400 && laserTop + 40 >= enemyTop) {
-        if ( (laserLeft <= enemyLeft && laserLeft >= enemyLeft) ) {
-          return true
-        } else {
-          return false
-        }
+    console.log(enemyLeft)
+    if (laserLeft != 400 && laserLeft + 40 >= enemyLeft) {
+      if ( (laserTop <= enemyTop && laserTop >= enemyBottom) ) {
+        console.log("hit me bitch")
+        return true
       } else {
         return false
       }
+    } else {
+      return false
     }
+  }
+       
 
 function gameOver(){
     window.removeEventListener("keydown",flyBoy)
@@ -186,5 +194,5 @@ function playGame(){
     instructions.style.display = "none"
     window.addEventListener("keydown", flyBoy)
     // how often new enemy ship is created
-    enemyInterval = setInterval(() => { createEnemy() }, 5500)
+    enemyInterval = setInterval(() => { createEnemy() }, 10500)
 }
