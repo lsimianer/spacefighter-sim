@@ -78,6 +78,34 @@ console.log("shit happens")
 // not y axis is fixed so laser creation will grab current x axis.. offset the y axis to appear its nose of ship firing
 // var gameArea = document.getElementById("gameArea")
 
+// enemies
+function createEnemy(){
+    let newEnemy = document.createElement('img')
+    let enemySpriteImg = enemyImg[Math.floor(Math.random()*enemyImg.length)]
+    newEnemy.src =enemySpriteImg
+    newEnemy.classList.add('enemy')
+    newEnemy.classList.add('enemy-transition')
+    newEnemy.style.left = `${Math.floor(Math.random()*330)+10}px`
+    newEnemy.style.top = '-200px'
+    gameArea.appendChild(newEnemy)
+    moveEnemy(newEnemy)
+    console.log(" new enemy is made")
+}
+function moveEnemy(enemy){
+    let moveEnemyInterval = setInterval(() => {
+        let yPosition = parseInt(window.getComputedStyle(enemy).getPropertyValue('top'))
+    if (yPosition <= 50) {
+      if (Array.from(enemy.classList).includes("dead-enemy")) {
+        enemy.remove()
+      } else {
+      enemy.style.top = `${yPosition + 2}px`
+      console.log("trying to move")
+        }
+      }
+    }, 30)
+}
+// end enemy creation and movement functions
+// begin laser fire functions 
 function fireAway(){
     let laser = createLaserElement()
     gameArea.appendChild(laser)
@@ -91,75 +119,52 @@ function createLaserElement(){
     let newLaser = document.createElement('img')
     newLaser.src = 'images/laser.png'
     newLaser.classList.add('laser')
-    newLaser.style.left = `${xPosition - 290}px`
-    newLaser.style.top = `${yPosition}px`
+    newLaser.style.left = `${xPosition - 90}px`
+    newLaser.style.top = `${yPosition-18}px`
     return newLaser
 }
-//y is vertical x is horizontal
+
+
 function moveLaser(laser) {
-    let laserInterval = setInterval(() =>{
-        let yPosition = parseInt(laser.style.top)
-        let enemies = document.querySelectorAll('.enemyShip')
-        enemies.forEach(enemy => {
-            if(checkLaserHit(laser,enemy)) {
-                enemy.classList.remove("enemy")
-                enemy.classList.add("dead-enemy")
-                scoreCounter.innerText = parseInt(scoreCounter.innerText) + 100
-            }
-        })
-        if(yPosition === 0){
-            laser.remove()
-        } else {
-            laser.style.top = `${yPosition -10}px`
+    let laserInterval = setInterval(() => {
+      let yPosition = parseInt(laser.style.top)
+      let enemies = document.querySelectorAll(".enemy")
+      enemies.forEach(enemy => {
+        if (checkLaserHit(laser, enemy)) {
+          enemy.src = "images/explosion.png"
+          enemy.classList.remove("enemy")
+          enemy.classList.add("dead-enemy")
+          scoreCounter.innerText = parseInt(scoreCounter.innerText) + 100
         }
-    },10)
-}
+      })
+      if (yPosition <= -100) {
+        laser.remove()
+      } else {
+        laser.style.top = `${yPosition - 18}px`
+      }
+    }, 10)
+  }
+//
 
-// enemies
-
-function createEnemy(){
-    let newEnemy = document.createElement('img')
-    let enemySpriteImg = enemyImg[Math.floor(Math.random()*enemyImg.length)]
-    newEnemy.src =enemySpriteImg
-    newEnemy.classList.add('enemy')
-    newEnemy.classList.add('enemy-transition')
-    newEnemy.style.left = `${Math.floor(Math.random()*330)+30}px`
-    newEnemy.style.top = '0px'
-    gameArea.appendChild(newEnemy)
-    moveEnemy(newEnemy)
-}
-function moveEnemy(enemy){
-    let moveEnemyInterval = setInterval(() => {
-        let yPosition = parseInt(window.getComputedStyle(enemy).getPropertyValue('top'))
-        if(yPosition <= 70){
-            if (Array.from(enemy.classList).includes("dead-enemy")) {
-                enemy.remove()
-            } else {
-                gameOver()
-            }
-        } else {
-            enemy.style.top = `${yPosition + 4}px`
-        }
-    }, 5)
-}
-// end enemy creation and movement functions
 function checkLaserHit(laser,enemy){
+    console.log("checking if hit")
     let laserLeft = parseInt(laser.style.left)
     let laserTop = parseInt(laser.style.top)
-    let laserBottom = laserTop - 20
+    let laserBottom = laserTop - 15
     let enemyTop = parseInt(enemy.style.top)
     let enemyBottom = enemyTop - 30
     let enemyLeft = parseInt(enemy.style.left)
-    if( laserLeft != 340 && laserLeft + 40 >= monsterBottom) {
-        if( ( laserTop <= enemyTop && laserTop >= enemyBottom) ){
-            return true
+    // left (x axis)= 0-400 px top(y axis)= 300- (-10)px
+    if (laserTop != 400 && laserTop + 40 >= enemyTop) {
+        if ( (laserLeft <= enemyLeft && laserLeft >= enemyLeft) ) {
+          return true
         } else {
-            return false
+          return false
         }
-    } else {
+      } else {
         return false
+      }
     }
-}
 
 function gameOver(){
     window.removeEventListener("keydown",flyBoy)
@@ -180,5 +185,6 @@ function playGame(){
     startButton.style.display = "none"
     instructions.style.display = "none"
     window.addEventListener("keydown", flyBoy)
-    enemyInterval = setInterval(() => { createEnemy() }, 2100)
+    // how often new enemy ship is created
+    enemyInterval = setInterval(() => { createEnemy() }, 5500)
 }

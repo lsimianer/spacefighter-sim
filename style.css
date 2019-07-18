@@ -5,12 +5,12 @@
 }
 
 #playerShip{
-    width: 50%; 
-    height: 70%; 
+    width: 25%; 
+    height: 40%; 
     object-fit: contain;
     background-color: transparent;
     position: relative;
-    top: 50%;
+    top: 75%;
     left: 41%;
 }
 
@@ -21,9 +21,10 @@
 }
 
 .enemy{
-    width: 30%; 
-    height: 50%; 
+    width: 20%; 
+    height: 40%; 
     object-fit: contain;
     background-color: transparent;
+    position: absolute;
 
 }
