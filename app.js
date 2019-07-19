@@ -94,13 +94,11 @@ function createEnemy(){
 function moveEnemy(enemy){
     let moveEnemyInterval = setInterval(() => {
         let yPosition = parseInt(window.getComputedStyle(enemy).getPropertyValue('top'))
-        console.log(yPosition)
     if( yPosition === 340){
       enemy.remove()
     };
     if (yPosition <= 400) {
       if (Array.from(enemy.classList).includes("dead-enemy")) {
-        console.log("im back")
       } else {
       enemy.style.top = `${yPosition + 2}px`
         }
@@ -160,7 +158,7 @@ function checkLaserHit(laser,enemy){
     let enemyBottom = (enemyTop - 30)
     let enemyLeft = parseInt(enemy.style.left)
     // left (x axis)= 0-400 px top(y axis)= 300- (-10)px
-    console.log(enemyLeft)
+    // console.log(enemyLeft)
     if (laserLeft != 400 && laserLeft + 40 >= enemyLeft) {
       if ( (laserTop <= enemyTop && laserTop >= enemyBottom) ) {
         console.log("hit me bitch")
@@ -173,6 +171,11 @@ function checkLaserHit(laser,enemy){
     }
   }
        
+
+
+  function battleships(){
+    // if score 300 or better. show big ships cruise through with giant explosion
+  }
 
 function gameOver(){
     window.removeEventListener("keydown",flyBoy)
