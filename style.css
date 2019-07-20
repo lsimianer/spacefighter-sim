@@ -1,7 +1,17 @@
 body{
     background-image: url("http://getwallpapers.com/wallpaper/full/4/a/7/188752.jpg");
+    animation: BackgroundAnimated 155s linear infinite;
+
 }
 
+@keyframes BackgroundAnimated {
+    from {
+        background-position:0 0
+    }
+    to {
+        background-position:100% 0
+    }
+  }
 #gameArea{
     background-color: transparent;
     width: 50%;
@@ -11,6 +21,8 @@ body{
     color: white;
     text-align: center;
     margin-bottom: 2%;
+    animation: slideInRight 5.75s;
+
 }
 
 #score{
@@ -26,6 +38,7 @@ body{
     position: relative;
     top: 35%;
     left: 41%;
+    animation: slideInRight 7.75s
 }
 
 .laser{
@@ -58,5 +71,93 @@ body{
   }
 
   #startBtn{
+      color: white;
       margin-left: 43%;
+      border-radius: 40%;
+      width: 15%;
+      background-image: url('/images/start.png');
+      background-size: contain;
+      animation: pulse 8s infinite ease;
+    }
+
+
+
+@keyframes pulse {
+  0% {
+    background-color:transparent;
+    border-color: black;
+  }
+  100% {
+    background-color:darkblue;
+    border-color: darkgoldenrod;
+  }
+  0% {
+    background-color:rgb(29, 1, 1);
+    border-color: black;
+  }
+}
+  #startBtn:hover{
+      background-color: black;
+      border-color: darkblue;
+  }
+
+  @keyframes fly {
+
+    98.001%, 0% {
+                  display: block;
+      transform: translateX(-200%) translateY(100vh) rotateZ(0deg)
+    }
+  
+    15% {
+      transform: translateX(100vw) translateY(-100%) rotateZ(180deg)
+    }
+  
+    15.001%, 18% {
+      transform: translateX(100vw) translateY(-30%) rotateZ(0deg)
+    }
+  
+    40% {
+      transform: translateX(-200%) translateY(3vh) rotateZ(-180deg)
+    }
+  
+    40.001%, 43% {
+      transform: translateX(-200%) translateY(-100%) rotateZ(-180deg)
+    }
+  
+    65% {
+      transform: translateX(100vw) translateY(50vh) rotateZ(0deg)
+    }
+  
+    65.001%, 68% {
+      transform: translateX(100vw) translateY(-200%) rotateZ(180deg)
+    }
+  
+    95% {
+      transform: translateX(100vw) translateY(100vh) rotateZ(0deg)
+    }
+  }
+  @keyframes myOrbit {
+    from { transform: rotate(20deg) translateX(280px) rotate(20deg); }
+    to   { transform: rotate(360deg) translateX(250px) rotate(-360deg); }
+}
+@keyframes myOrbit2 {
+    from { transform: rotate(10deg) translateX(170px) rotate(0deg); }
+    to   { transform: rotate(360deg) translateX(290px) rotate(-360deg); }
+}
+
+@keyframes slideInRight {
+    0% {
+      opacity: 0;
+      transform: translateX(300px); }
+    100% {
+      opacity: 1;
+      transform: translateX(0); } }
+  #bossShip{
+    animation: slideInRight 3.75s , myOrbit 25s linear infinite; 
+
+  }
+
+  #friendlyBoss{
+    animation: slideInRight 3.75s , myOrbit2 25s linear infinite; 
+
   }
